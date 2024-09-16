@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Reservation System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        main {
+            padding: 2rem;
+        }
+
+        .room-list {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.25rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Hotel Reservation System</h1>
+        <nav>
+            <a href="{{ url_for('view_reservations') }}" class="nav-link">View Reservations</a>
+        </nav>
+    </header>
+    <main>
+        <section class="room-list">
+            <h2>Available Rooms</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Room Number</th>
+                        <th>Room Type</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for room in rooms %}
+                        <tr>
+                            <td>{{ room.room_number }}</td>
+                            <td>{{ room.room_type }}</td>
+                            <td>{{ room.status }}</td>
+                            <td>
+                                {% if room.status == 'Available' %}
+                                    <form action="{{ url_for('reserve', room_number=room.room_number) }}" method="POST">
+                                        <input type="hidden" name="hotel" value="Hotel Topo"> <!-- Puedes ajustar esto según sea necesario -->
+                                        <input type="text" name="customer_name" placeholder="Customer Name" required>
+                                        <input type="text" name="identification" placeholder="Identification" required>
+                                        <input type="text" name="phone" placeholder="Phone" required>
+                                        <input type="date" name="reservation_date" required>
+                                        <input type="time" name="time_slot" required>
+                                        <button type="submit">Reserve</button>
+                                    </form>
+                                {% else %}
+                                    Reserved
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </main>
+</body>
+</html>
